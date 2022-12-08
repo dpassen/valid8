@@ -2,7 +2,6 @@ package org.passen.valid8;
 
 import static com.jnape.palatable.lambda.adt.Either.left;
 import static com.jnape.palatable.lambda.adt.Either.right;
-import static com.jnape.palatable.lambda.functions.Effect.fromConsumer;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -18,7 +17,7 @@ class ValidatorTest {
     final Validator<Boolean, Boolean> alwaysPasses = Either::right;
     alwaysPasses
         .validate(true)
-        .peek(__ -> fail("this should not fail"), fromConsumer(b -> assertThat(b).isTrue()));
+        .match(__ -> fail("this should not fail"), b -> assertThat(b).isTrue());
   }
 
   @Test
@@ -27,8 +26,8 @@ class ValidatorTest {
         b -> left(new ValidationException("always fails"));
     alwaysFails
         .validate(true)
-        .peek(
-            fromConsumer(e -> assertThat(e).isExactlyInstanceOf(ValidationException.class)),
+        .match(
+            e -> assertThat(e).isExactlyInstanceOf(ValidationException.class),
             __ -> fail("this should not pass"));
   }
 
@@ -46,17 +45,15 @@ class ValidatorTest {
         .validate(passingSubject)
         .flatMap(isGreaterThanOne::validate)
         .flatMap(isTwo::validate)
-        .peek(
-            __ -> fail("this should not fail"),
-            fromConsumer(n -> assertThat(n).isEqualTo(passingSubject)));
+        .match(__ -> fail("this should not fail"), n -> assertThat(n).isEqualTo(passingSubject));
 
     final int failingSubject = 3;
     isLessThanFour
         .validate(failingSubject)
         .flatMap(isGreaterThanOne::validate)
         .flatMap(isTwo::validate)
-        .peek(
-            fromConsumer(e -> assertThat(e).isExactlyInstanceOf(ValidationException.class)),
+        .match(
+            e -> assertThat(e).isExactlyInstanceOf(ValidationException.class),
             __ -> fail("this should not pass"));
   }
 }

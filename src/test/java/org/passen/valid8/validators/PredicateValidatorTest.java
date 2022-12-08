@@ -1,6 +1,5 @@
 package org.passen.valid8.validators;
 
-import static com.jnape.palatable.lambda.functions.Effect.fromConsumer;
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -17,9 +16,7 @@ class PredicateValidatorTest {
     final long testSubject = 2L;
     new PredicateValidator<Long>(n -> n % 2 == 0)
         .validate(testSubject)
-        .peek(
-            __ -> fail("This should not fail"),
-            fromConsumer(n -> assertThat(n).isEqualTo(testSubject)));
+        .match(__ -> fail("This should not fail"), n -> assertThat(n).isEqualTo(testSubject));
   }
 
   @Test
@@ -27,9 +24,8 @@ class PredicateValidatorTest {
     final long testSubject = 2L;
     new PredicateValidator<Long>(n -> n % 2 == 1)
         .validate(testSubject)
-        .peek(
-            fromConsumer(
-                e -> assertThat(e).isExactlyInstanceOf(ValidationException.class).hasMessage("")),
+        .match(
+            e -> assertThat(e).isExactlyInstanceOf(ValidationException.class).hasMessage(""),
             __ -> fail("This should not pass"));
   }
 
@@ -40,12 +36,11 @@ class PredicateValidatorTest {
 
     new PredicateValidator<Long>(n -> n % 2 == 1, validationMessage)
         .validate(testSubject)
-        .peek(
-            fromConsumer(
-                e ->
-                    assertThat(e)
-                        .isExactlyInstanceOf(ValidationException.class)
-                        .hasMessage(validationMessage)),
+        .match(
+            e ->
+                assertThat(e)
+                    .isExactlyInstanceOf(ValidationException.class)
+                    .hasMessage(validationMessage),
             __ -> fail("This should not pass"));
   }
 }

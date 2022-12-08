@@ -1,6 +1,5 @@
 package org.passen.valid8.validators;
 
-import static com.jnape.palatable.lambda.functions.Effect.fromConsumer;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -16,9 +15,7 @@ class ThrowingValidatorTest {
     final long testSubject = 123L;
     new ThrowingValidator<String, Long>(Long::parseLong)
         .validate(Long.toString(testSubject))
-        .peek(
-            __ -> fail("this should not fail"),
-            fromConsumer(n -> assertThat(n).isEqualTo(testSubject)));
+        .match(__ -> fail("this should not fail"), n -> assertThat(n).isEqualTo(testSubject));
   }
 
   @Test
@@ -26,12 +23,11 @@ class ThrowingValidatorTest {
     final String testSubject = "foo";
     new ThrowingValidator<String, Long>(Long::parseLong)
         .validate(testSubject)
-        .peek(
-            fromConsumer(
-                e ->
-                    assertThat(e)
-                        .isExactlyInstanceOf(ValidationException.class)
-                        .hasCauseExactlyInstanceOf(NumberFormatException.class)),
+        .match(
+            e ->
+                assertThat(e)
+                    .isExactlyInstanceOf(ValidationException.class)
+                    .hasCauseExactlyInstanceOf(NumberFormatException.class),
             __ -> fail("this should not pass"));
   }
 }
