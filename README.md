@@ -1,4 +1,4 @@
-# valid-8
+# valid8
 
 A simple Java 8 validation library
 
