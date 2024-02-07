@@ -18,7 +18,7 @@ jobs:
           java-version: 17
 
       - name: Run Tests
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: current
           arguments: test
