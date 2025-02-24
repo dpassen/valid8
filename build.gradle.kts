@@ -18,7 +18,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.36")
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.12.0")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.11.4")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.12.0")
 
     testImplementation("org.assertj:assertj-core:3.27.3")
 }
