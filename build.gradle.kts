@@ -14,8 +14,8 @@ repositories {
 dependencies {
     api("com.jnape.palatable:lambda:5.5.0")
 
-    compileOnly("org.projectlombok:lombok:1.18.40")
-    annotationProcessor("org.projectlombok:lombok:1.18.40")
+    compileOnly("org.projectlombok:lombok:1.18.42")
+    annotationProcessor("org.projectlombok:lombok:1.18.42")
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.13.4")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
