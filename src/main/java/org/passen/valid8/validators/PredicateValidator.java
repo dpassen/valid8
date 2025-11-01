@@ -4,18 +4,21 @@ import static com.jnape.palatable.lambda.adt.Either.left;
 import static com.jnape.palatable.lambda.adt.Either.right;
 
 import com.jnape.palatable.lambda.adt.Either;
+import java.util.Objects;
 import java.util.function.Predicate;
-import lombok.AllArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.passen.valid8.SimpleValidator;
 import org.passen.valid8.ValidationException;
 
-@AllArgsConstructor
-@RequiredArgsConstructor
-public class PredicateValidator<V> implements SimpleValidator<V> {
-  @NonNull private final Predicate<V> predicate;
-  @NonNull private String message = "";
+public record PredicateValidator<V>(Predicate<V> predicate, String message)
+    implements SimpleValidator<V> {
+  public PredicateValidator {
+    Objects.requireNonNull(predicate);
+    Objects.requireNonNull(message);
+  }
+
+  public PredicateValidator(final Predicate<V> predicate) {
+    this(predicate, "");
+  }
 
   @Override
   public Either<ValidationException, V> validate(final V v) {
