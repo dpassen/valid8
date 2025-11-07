@@ -12,7 +12,7 @@ import org.passen.valid8.ValidationException;
 class ThrowingValidatorTest {
   @Test
   void canPassValidation() {
-    final long testSubject = 123L;
+    final long testSubject = 123;
     new ThrowingValidator<String, Long>(Long::parseLong)
         .validate(Long.toString(testSubject))
         .match(__ -> fail("this should not fail"), n -> assertThat(n).isEqualTo(testSubject));
